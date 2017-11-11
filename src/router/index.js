@@ -21,7 +21,7 @@ const router = new VueRouter({
 router.beforeEach(({meta, path}, from, next) => {
   store.dispatch('showProgress', 0)
   // NProgress.start();
-  let {auth = false} = meta
+  let {auth = true} = meta
   let isLogin = Boolean(store.state.token)
 
   /*
