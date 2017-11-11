@@ -3,7 +3,7 @@
     <div v-if="shows">
       <h2>喜欢黑夜</h2>
       <p>一个一直想做些有意义的事却还没有思路的小行者</p>
-      <p><a href="https://github.com/lijinzhuang" target="_blank">Github</a>&nbsp;&nbsp;<a href="https://www.xue37.com" target="_blank">拣书</a><a href="http://blog.csdn.net/buzaiQQ" target="_blank">CSDN</a></p>
+      <p><a href="https://github.com/lijinzhuang" target="_blank">Github</a>&nbsp;&nbsp;<a href="https://www.xue37.cn" target="_blank">拣书</a><a href="http://blog.csdn.net/buzaiQQ" target="_blank">CSDN</a></p>
       <h2>关于网站</h2>
       <p>本站服务端采用 express + mongoDB 搭建, 客户端采用Vue2全家桶</p>
       <p>主要功能包括: 后台登录, 注册, 管理, 标签, 文章, 支持markdown语法编辑, 支持代码高亮</p>
