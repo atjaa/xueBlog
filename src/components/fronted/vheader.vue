@@ -39,24 +39,40 @@ export default {
       }, 200)
     }
   },
-  mounted () {
-    let canvas = document.getElementById('canvas')
-    let ctx = canvas.getContext('2d')
-    let width = window.innerWidth
-    let height = window.innerHeight
-    let stars = new Stars(ctx, width, height, 200)
-    let moon = new Moon(ctx, width, height)
-    let count = 0
-    canvas.width = width
-    canvas.height = height
-    const frame = () => {
-      count++
-      (count % 10 === 0) && stars.blink()
-      moon.draw()
-      stars.draw()
-      requestAnimationFrame(frame)
+  methods: {
+    IsPC () {
+      var userAgentInfo = navigator.userAgent
+      var Agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod']
+      var flag = true
+      for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+          flag = false
+          break
+        }
+      }
+      return flag
     }
-    frame()
+  },
+  mounted () {
+    if (this.IsPC()) {
+      let canvas = document.getElementById('canvas')
+      let ctx = canvas.getContext('2d')
+      let width = window.innerWidth
+      let height = window.innerHeight
+      let stars = new Stars(ctx, width, height, 200)
+      let moon = new Moon(ctx, width, height)
+      let count = 0
+      canvas.width = width
+      canvas.height = height
+      const frame = () => {
+        count++
+        (count % 10 === 0) && stars.blink()
+        moon.draw()
+        stars.draw()
+        requestAnimationFrame(frame)
+      }
+      frame()
+    }
   }
 }
 </script>
