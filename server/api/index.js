@@ -1,69 +1,85 @@
-var User = require('../lib/mongo').User
-var Classify = require('../lib/mongo').Classify
-var Article = require('../lib/mongo').Article
+var User = require('../lib/mysql').User
+var Classify = require('../lib/mysql').Classify
+var Article = require('../lib/mysql').Article
 module.exports = {
-  create: function (user) {
-    return User.create(user).exec()
+  create: function (user, callback) {
+    User.create(user, function (res) {
+      callback(res)
+    })
   },
-  getUserByName: function (name) {
-    return User.findOne({name: name}).exec()
+  getUserByName: function (name, callback) {
+    User.findOne(name, function (res) {
+      callback(res)
+    })
   },
   //  创建分类
-  createClass: function (data) {
-    return Classify.create(data).exec()
+  createClass: function (data, callback) {
+    Classify.create(data, function (res) {
+      callback(res)
+    })
   },
   // 删除分类
-  removeClass: function (classId) {
-    return Classify.remove({_id: classId}).exec()
+  removeClass: function (classId, callback) {
+    Classify.remove(classId, function (res) {
+      callback(res)
+    })
   },
   // 编辑分类
-  updateClass: function (classId, data) {
-    return Classify.update({_id: classId}, {$set: data}).exec()
+  updateClass: function (classId, data, callback) {
+    Classify.update(classId, data, function (res) {
+      callback(res)
+    })
   },
   // 查询所有分类
-  findAllClass: function () {
-    return Classify.find()
-      .addCreateAt()
-      .sort({_id: -1})
-      .exec()
+  findAllClass: function (callback) {
+    Classify.find(function (res) {
+      callback(res)
+    })
   },
   // 创建文章
-  createArticle: function (params) {
-    return Article.create(params).exec()
+  createArticle: function (params, callback) {
+    Article.create(params, function (res) {
+      callback(res)
+    })
   },
   // 获取所有文章
-  getAllArticles: function (page, limit) {
+  getAllArticles: function (page, limit, callback) {
     if (page && limit) {
-      var skip = (page - 1) * limit
-      return Promise.all([
-        Article.find().addCreateAt().sort({_id: -1}).skip(skip).limit(limit).exec(),
-        Article.count().exec()
-      ])
-    } else {
-      return Article.find()
-        .addCreateAt()
-        .sort({_id: -1})
-        .exec()
+      if (page > 0) {
+        page = page - 1
+      }
+      Article.find(page, limit, function (res) {
+        callback(res)
+      })
     }
   },
-  // 根据classify获取所有文章
-  getArticlesByClassify: function (classify) {
-    return Article.find({classify})
-      .addCreateAt()
-      .sort({_id: -1})
-      .exec()
+  // 获取所有文章
+  getArticlesCount: function (callback) {
+    Article.count(function (res) {
+      callback(res)
+    })
   },
-  getOneArticle (postId) {
-    return Article.findOne({_id: postId})
-      .addCreateAt()
-      .exec()
+  // 根据classify获取所有文章
+  getArticlesByClassify: function (classify, callback) {
+    Article.findByClassify(classify, function (res) {
+      callback(res)
+    })
+  },
+  getOneArticle (postId, callback) {
+    Article.findOne(postId, function (res) {
+      callback(res)
+    })
   },
   // 删除一篇文章
-  removeOneArticle: function (postId) {
-    return Article.remove({_id: postId}).exec()
+  removeOneArticle: function (postId, callback) {
+    Article.remove(postId, function (res) {
+      callback(res)
+    })
   },
   // 编辑一篇文章
-  updateArticle: function (postId, data) {
-    return Article.update({_id: postId}, {$set: data}).exec()
+  updateArticle: function (postId, data, callback) {
+    Article.update(postId, data, function (res) {
+      callback(res)
+    })
   }
 }

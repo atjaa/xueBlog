@@ -13,27 +13,39 @@ router.post('/reg', function (req, res, next) {
     password: password
   }
 
-  UserModel.create(user)
-    .then(() => {
-      res.send({
-        // 创建用户成功
+  UserModel.create(user, function (rs) {
+    if (rs && rs.affectedRows > 0) {
+      res.json({
         code: 200,
         token: createToken(name)
       })
-    })
-    .catch(err => {
-      // 操作数据库的时候发生错误
-      if (err.message.match('E11000 duplicate key')) {
-        return res.json({
-          code: -200,
-          message: '用户名重复'
-        })
-      }
-      // 服务器发生错误（例如status:）
-      return res.json({
+    } else {
+      res.json({
         code: -200,
-        message: err.toString()
+        message: '添加用户失败'
       })
-    })
+    }
+  })
+    // .then(() => {
+    //   res.send({
+    //     // 创建用户成功
+    //     code: 200,
+    //     token: createToken(name)
+    //   })
+    // })
+    // .catch(err => {
+    //   // 操作数据库的时候发生错误
+    //   if (err.message.match('E11000 duplicate key')) {
+    //     return res.json({
+    //       code: -200,
+    //       message: '用户名重复'
+    //     })
+    //   }
+    //   // 服务器发生错误（例如status:）
+    //   return res.json({
+    //     code: -200,
+    //     message: err.toString()
+    //   })
+    // })
 })
 module.exports = router
